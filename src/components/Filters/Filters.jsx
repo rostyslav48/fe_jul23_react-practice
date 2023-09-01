@@ -6,10 +6,15 @@ export const Filters = ({
   changeSelectedUser,
   searchQuery,
   changeSearchQuery,
+  categories,
+  selectedCategories,
+  changeCategory,
+  clearCategories,
 }) => {
   const resetAllFilters = () => {
     changeSelectedUser(0);
     changeSearchQuery('');
+    clearCategories();
   };
 
   return (
@@ -78,41 +83,37 @@ export const Filters = ({
           <a
             href="#/"
             data-cy="AllCategories"
-            className="button is-success mr-6 is-outlined"
+            onClick={clearCategories}
+            className={cn(
+              'button',
+              'is-success',
+              'mr-6',
+              {
+                'is-outlined': Boolean(selectedCategories.length),
+              },
+            )}
           >
             All
           </a>
 
-          <a
-            data-cy="Category"
-            className="button mr-2 my-1 is-info"
-            href="#/"
-          >
-            Category 1
-          </a>
-
-          <a
-            data-cy="Category"
-            className="button mr-2 my-1"
-            href="#/"
-          >
-            Category 2
-          </a>
-
-          <a
-            data-cy="Category"
-            className="button mr-2 my-1 is-info"
-            href="#/"
-          >
-            Category 3
-          </a>
-          <a
-            data-cy="Category"
-            className="button mr-2 my-1"
-            href="#/"
-          >
-            Category 4
-          </a>
+          {categories.map(category => (
+            <a
+              key={category.id}
+              data-cy="Category"
+              className={cn(
+                'button',
+                'mr-2',
+                'my-1',
+                {
+                  'is-info': selectedCategories.includes(category.id),
+                },
+              )}
+              href="#/"
+              onClick={() => changeCategory(category.id)}
+            >
+              {category.title}
+            </a>
+          ))}
         </div>
 
         <div className="panel-block">

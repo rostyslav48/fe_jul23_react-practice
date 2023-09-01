@@ -25,11 +25,13 @@ function filterProducts(productsToFilter, queries) {
   const {
     userId,
     searchQuery,
+    selectedCategories,
   } = queries;
 
   let filteredData = filterByUser(productsToFilter, userId);
 
   filteredData = filterBySearchQuery(filteredData, searchQuery);
+  filteredData = filterByCategories(filteredData, selectedCategories);
 
   return filteredData;
 }
@@ -49,16 +51,48 @@ function filterBySearchQuery(productsToFilter, searchQuery) {
     .filter(({ name }) => name.toLowerCase().includes(lowerQuery));
 }
 
+function filterByCategories(productsToFilter, categories) {
+  if (!categories.length) {
+    return productsToFilter;
+  }
+
+  return productsToFilter
+    .filter(({ category }) => categories.includes(category.id));
+}
+
 export const App = () => {
   const [selectedUser, setSelectedUser] = useState(0);
   const [searchQuery, setSearchQuery] = useState('');
+  const [selectedCategories, setSelectedCategories] = useState([]);
 
   const filterParams = {
     userId: selectedUser,
     searchQuery,
+    selectedCategories,
   };
 
   const filteredProducts = filterProducts(products, filterParams);
+
+  const addSelectedCategory = (newCategory) => {
+    setSelectedCategories(prevState => [...prevState, newCategory]);
+  };
+
+  const removeSelectedCategory = (categoryToRemove) => {
+    setSelectedCategories(prevState => prevState
+      .filter(id => id !== categoryToRemove));
+  };
+
+  const changeCategory = (id) => {
+    if (selectedCategories.includes(id)) {
+      removeSelectedCategory(id);
+
+      return;
+    }
+
+    addSelectedCategory(id);
+  };
+
+  const clearCategories = () => setSelectedCategories([]);
 
   return (
     <div className="section">
@@ -71,6 +105,10 @@ export const App = () => {
           changeSelectedUser={newUser => setSelectedUser(newUser)}
           searchQuery={searchQuery}
           changeSearchQuery={newQuery => setSearchQuery(newQuery)}
+          categories={categoriesFromServer}
+          selectedCategories={selectedCategories}
+          changeCategory={changeCategory}
+          clearCategories={clearCategories}
         />
         <ProductList products={filteredProducts} />
 
