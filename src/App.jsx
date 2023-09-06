@@ -61,12 +61,12 @@ function filterByCategories(productsToFilter, categories) {
 }
 
 export const App = () => {
-  const [selectedUser, setSelectedUser] = useState(0);
+  const [selectedUserId, setSelectedUserId] = useState(0);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategories, setSelectedCategories] = useState([]);
 
   const filterParams = {
-    userId: selectedUser,
+    userId: selectedUserId,
     searchQuery,
     selectedCategories,
   };
@@ -101,8 +101,8 @@ export const App = () => {
 
         <Filters
           users={usersFromServer}
-          selectedUser={selectedUser}
-          changeSelectedUser={newUser => setSelectedUser(newUser)}
+          selectedUserId={selectedUserId}
+          changeSelectedUserId={newUser => setSelectedUserId(newUser)}
           searchQuery={searchQuery}
           changeSearchQuery={newQuery => setSearchQuery(newQuery)}
           categories={categoriesFromServer}

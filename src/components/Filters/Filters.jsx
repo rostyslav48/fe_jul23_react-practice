@@ -2,8 +2,8 @@ import cn from 'classnames';
 
 export const Filters = ({
   users,
-  selectedUser,
-  changeSelectedUser,
+  selectedUserId,
+  changeSelectedUserId,
   searchQuery,
   changeSearchQuery,
   categories,
@@ -12,7 +12,7 @@ export const Filters = ({
   clearCategories,
 }) => {
   const resetAllFilters = () => {
-    changeSelectedUser(0);
+    changeSelectedUserId(0);
     changeSearchQuery('');
     clearCategories();
   };
@@ -27,9 +27,9 @@ export const Filters = ({
             data-cy="FilterAllUsers"
             href="#/"
             className={cn({
-              'is-active': !selectedUser,
+              'is-active': !selectedUserId,
             })}
-            onClick={() => changeSelectedUser(0)}
+            onClick={() => changeSelectedUserId(0)}
           >
             All
           </a>
@@ -40,9 +40,9 @@ export const Filters = ({
               data-cy="FilterUser"
               href="#/"
               className={cn({
-                'is-active': user.id === selectedUser,
+                'is-active': user.id === selectedUserId,
               })}
-              onClick={() => changeSelectedUser(user.id)}
+              onClick={() => changeSelectedUserId(user.id)}
             >
               {user.name}
             </a>
